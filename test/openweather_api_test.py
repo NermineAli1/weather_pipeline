@@ -1,16 +1,17 @@
 import requests
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 response = requests.get(
-    "https://api.stormglass.io/v2/weather/point",
+    "https://api.openweathermap.org/data/2.5/weather",
     params={
-        "lat": 58.7984,
-        "lng": 17.8081,
-        "params": "windSpeed",
-    },
-    headers={"Authorization": os.getenv("OPENWEATHER_API_KEY")},
+        "q": "Paris",
+        "appid": os.getenv("OPENWEATHER_API_KEY"),
+        "units": "metric"
+    }
 )
 
-# Do something with response data.
-json_data = response.json()
-print(json_data)
+print(response.status_code)
+print(response.json())
