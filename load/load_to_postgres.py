@@ -1,10 +1,16 @@
-import psycopg2
-from extract.fetch_weather import fetch_weather
-from dotenv import load_dotenv
+import sys
 import os
+import psycopg2
+from dotenv import load_dotenv
+
+# Ajoute le dossier parent au path pour trouver 'extract'
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from extract.fetch_weather import fetch_weather
 
 load_dotenv()
 
+# Connexion à PostgreSQL
 conn = psycopg2.connect(
     host=os.getenv("POSTGRES_HOST"),
     dbname=os.getenv("POSTGRES_DB"),
@@ -14,6 +20,8 @@ conn = psycopg2.connect(
 )
 
 cur = conn.cursor()
+
+# Créer la table si elle n'existe pas
 cur.execute("""
     CREATE TABLE IF NOT EXISTS raw_weather (
         city TEXT,
@@ -24,7 +32,9 @@ cur.execute("""
     );
 """)
 
+# Récupérer les données météo et insérer dans la base
 data = fetch_weather()
+
 cur.execute("""
     INSERT INTO raw_weather (city, temperature, humidity, weather, timestamp)
     VALUES (%s, %s, %s, %s, to_timestamp(%s))
@@ -33,3 +43,5 @@ cur.execute("""
 conn.commit()
 cur.close()
 conn.close()
+
+print("✅ Données insérées dans la base PostgreSQL.")
