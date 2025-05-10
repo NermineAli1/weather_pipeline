@@ -11,6 +11,7 @@ URL = f"https://api.openweathermap.org/data/2.5/weather?q={CITY}&appid={API_KEY}
 def fetch_weather():
     response = requests.get(URL)
     data = response.json()
+    print(data)
     result = {
         "city": CITY,
         "temperature": data["main"]["temp"],
