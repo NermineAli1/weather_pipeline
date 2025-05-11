@@ -1,0 +1,12 @@
+name: 'weather_dbt'
+version: '1.0'
+config-version: 2
+
+profile: 'weather_profile'
+
+model-paths: ["models"]
+
+models:
+  weather_dbt:
+    staging:
+      +schema: staging

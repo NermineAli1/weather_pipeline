@@ -3,7 +3,6 @@ import os
 import psycopg2
 from dotenv import load_dotenv
 
-# Ajoute le dossier parent au path pour trouver 'extract'
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from extract.fetch_weather import fetch_weather
@@ -44,4 +43,4 @@ conn.commit()
 cur.close()
 conn.close()
 
-print("✅ Données insérées dans la base PostgreSQL.")
+print("Succès!")
